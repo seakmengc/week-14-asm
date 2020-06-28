@@ -4,10 +4,10 @@
 		<th>Name</th>
 		<th>Category</th>
 		<th>Author</th>
-		@auth
+		@can('approve', $posts->first())
 			<th class="text-center">Posting</th>
-			<th class="text-center">Actions</th>
-		@endauth
+		@endcan
+		<th>Actions</th>
 	</thead>
 
 	<tbody>
@@ -22,9 +22,7 @@
 			@endcan
 
 			<td>
-				@can('view', $post)
-					@include('posts.includes.actions.show')
-				@endcan
+				@include('posts.includes.actions.show')
 
 				@can('update', $post)
 					@include('posts.includes.actions.edit')

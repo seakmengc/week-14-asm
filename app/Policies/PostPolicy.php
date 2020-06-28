@@ -10,14 +10,10 @@ class PostPolicy
 {
     use HandlesAuthorization;
 
+    //for all auth users
     public function create(User $user)
     {
-        return false;
-    }
-
-    public function view(User $user)
-    {
-        return false;
+        return true;
     }
 
     /**
