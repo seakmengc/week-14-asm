@@ -51,4 +51,10 @@ class PostPolicy
 
         return $user->id === $post->author_id;
     }
+
+    //handle in Gate::before, since only admin can access
+    public function approve(User $user, Post $post)
+    {
+        return false;
+    }
 }

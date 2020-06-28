@@ -3,17 +3,27 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
+use App\Models\Category;
+use Illuminate\Http\Request;
 use App\Http\Requests\PostRequest;
 use App\Http\Controllers\Controller;
-use App\Models\Category;
 
 class PostController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $this->authorize("viewAny", Post::class);
 
-        $posts = Post::with('category')->paginate(10);
+        $request->validate([
+            'filter_approved' => 'array',
+            'filter_approved.*' => 'boolean',
+        ]);
+
+        $query = Post::with('category');
+        if ($request->has('filter_approved'))
+            $query->whereIn('is_approved', $request->filter_approved);
+
+        $posts = $query->paginate(10);
 
         return view('posts.index', compact('posts'));
     }
@@ -39,7 +49,7 @@ class PostController extends Controller
     public function show(Post $post)
     {
         $this->authorize("view", $post);
-        
+
         return view('posts.show', compact('post'));
     }
 
@@ -48,14 +58,14 @@ class PostController extends Controller
         $this->authorize("update", $post);
 
         $categories = Category::all();
-        
+
         return view('posts.edit', compact(['post', 'categories']));
     }
 
-    public function update(PostRequest $request,Post $post)
+    public function update(PostRequest $request, Post $post)
     {
         $this->authorize("update", $post);
-        
+
         $post->update($request->validated());
 
         return redirect()->route('posts.show', $post);
@@ -64,7 +74,7 @@ class PostController extends Controller
     public function destroy(Post $post)
     {
         $this->authorize("delete", $post);
-        
+
         $post->delete();
 
         return redirect()->route('posts.index');
@@ -79,6 +89,19 @@ class PostController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Deleted'
+        ]);
+    }
+
+    public function ajaxToggleApproved(Post $post)
+    {
+        $this->authorize('approve', $post);
+
+        $post->is_approved = !$post->is_approved;
+        $post->save();
+
+        return response()->json([
+            'success' => true,
+            'message' => $post->is_approved ? 'Approved' : 'Disapproved'
         ]);
     }
 }

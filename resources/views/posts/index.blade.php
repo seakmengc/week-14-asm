@@ -8,50 +8,34 @@
                 <div class="card-header">Posts</div>
 
                 <div class="table-responsive">
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>Name</th>
-                                <th>Category</th>
-                                <th>Author</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
+                    <form action="{{ route('posts.index') }}" method="get" class="m-3 form-inline">
+                        <div class="form-group">
+                            <label for="rg-from" class="pr-3">Filter: </label>
+                            <div class="form-check-inline">
+                                <label class="form-check-label">
+                                    <input type="checkbox" name="filter_approved[]" class="form-check-input" onchange="this.form.submit()" value="1" 
+                                    @if(Request::get('filter_approved'))
+                                        {{ in_array("1", Request::get('filter_approved')) ? "checked" : "" }}
+                                    @endif
+                                    >Approved
+                                </label>
+                            </div>
+                            <div class="form-check-inline">
+                                <label class="form-check-label">
+                                    <input type="checkbox" name="filter_approved[]" class="form-check-input" onchange="this.form.submit()" value="0"
+                                    @if(Request::get('filter_approved'))
+                                        {{ in_array("0", Request::get('filter_approved')) ? "checked" : "" }}
+                                    @endif
+                                    >Waiting
+                                </label>
+                            </div>
+                        </div>
+                    </form>
 
-                        <tbody>
-                        @forelse ($posts as $ind => $post)
-                            <tr id="post-{{ $post->id }}">
-                                <td>{{ $ind + 1 }}</td>
-                                <td>{{ $post->name }}</td>
-                                <td><a href="{{ route('categories.show', $post->category) }}">{{ $post->category->name }}</a></td>
-                                <td>{{ $post->author->name }}</td>
-
-                                <td>
-                                    @can('view', $post)
-                                        @include('posts.includes.actions.show')
-                                    @endcan
-
-                                    @can('update', $post)
-                                        @include('posts.includes.actions.edit')
-                                    @endcan
-
-                                    @can('delete', $post)
-                                        @include('posts.includes.actions.delete')
-                                        @include('posts.includes.actions.ajax_delete')
-                                    @endcan
-                                </td>
-                            </tr>
-                        @empty
-                            <tr>
-                                <td style="text-align: center" colspan="3">No post found.</td>
-                            </tr>
-                        @endforelse
-                        </tbody>
-                    </table>
+                    @include('posts.includes.table')
 
                     <div class="pagination justify-content-center">
-                        {{ $posts->links() }}
+                        {{ $posts->appends(['filter_approved' => Request::get('filter_approved')])->links() }}
                     </div>
 
                     @can('create', Post::class)

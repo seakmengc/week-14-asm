@@ -26,6 +26,8 @@ class CreatePostsTable extends Migration
                 ->constrained('users')
                 ->cascadeOnDelete();
 
+            $table->boolean('is_approved');
+
             $table->timestamps();
         });
     }

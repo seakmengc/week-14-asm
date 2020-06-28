@@ -11,6 +11,7 @@ $factory->define(Post::class, function (Faker $faker) {
         'category_id' => factory(Category::class),
         'title' => $faker->word,
         'content' => $faker->word,
-        'author_id' => $faker->numberBetween(1, 10)
+        'author_id' => $faker->numberBetween(1, 10),
+        'is_approved' => $faker->boolean()
     ];
 });

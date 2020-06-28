@@ -73,7 +73,7 @@ class Post extends Model
 
     protected static function booted()
     {
-        static::saving(function (Post $post) {
+        static::creating(function (Post $post) {
             $post->author()->associate(auth()->user());
         });
     }
