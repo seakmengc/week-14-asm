@@ -10,11 +10,6 @@ class PostPolicy
 {
     use HandlesAuthorization;
 
-    public function viewAny(User $user)
-    {
-        return $user->isEditor();
-    }
-
     public function create(User $user)
     {
         return false;

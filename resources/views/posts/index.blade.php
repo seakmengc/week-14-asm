@@ -8,6 +8,7 @@
                 <div class="card-header">Posts</div>
 
                 <div class="table-responsive">
+                    @can('approve', $posts->first())
                     <form action="{{ route('posts.index') }}" method="get" class="m-3 form-inline">
                         <div class="form-group">
                             <label for="rg-from" class="pr-3">Filter: </label>
@@ -31,6 +32,7 @@
                             </div>
                         </div>
                     </form>
+                    @endcan
 
                     @include('posts.includes.table')
 

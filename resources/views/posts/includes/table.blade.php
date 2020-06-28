@@ -1,13 +1,13 @@
 <table class="table">
 	<thead>
-		<tr>
-			<th>#</th>
-			<th>Name</th>
-			<th>Category</th>
-			<th>Author</th>
+		<th>#</th>
+		<th>Name</th>
+		<th>Category</th>
+		<th>Author</th>
+		@auth
 			<th class="text-center">Posting</th>
 			<th class="text-center">Actions</th>
-		</tr>
+		@endauth
 	</thead>
 
 	<tbody>
@@ -17,7 +17,9 @@
 			<td>{{ $post->title }}</td>
 			<td><a href="{{ route('categories.show', $post->category) }}">{{ $post->category->name }}</a></td>
 			<td>{{ $post->author->name }}</td>
-			<td>@include('posts.includes.actions.toggle_approved')</td>
+			@can('approve', $post)
+				<td>@include('posts.includes.actions.toggle_approved')</td>
+			@endcan
 
 			<td>
 				@can('view', $post)

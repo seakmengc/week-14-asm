@@ -12,16 +12,18 @@ class PostController extends Controller
 {
     public function index(Request $request)
     {
-        $this->authorize("viewAny", Post::class);
-
-        $request->validate([
-            'filter_approved' => 'array',
-            'filter_approved.*' => 'boolean',
-        ]);
-
         $query = Post::with('category');
-        if ($request->has('filter_approved'))
-            $query->whereIn('is_approved', $request->filter_approved);
+        if (auth()->check()) {
+            $request->validate([
+                'filter_approved' => 'array',
+                'filter_approved.*' => 'boolean',
+            ]);
+
+            if ($request->has('filter_approved'))
+                $query->whereIn('is_approved', $request->filter_approved);
+        } else {
+            $query->whereIsApproved(1);
+        }
 
         $posts = $query->paginate(10);
 
