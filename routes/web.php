@@ -33,3 +33,6 @@ Route::group([
     Route::delete('posts/{post}/ajax-delete', 'PostController@ajaxDestroy')->name('posts.ajax_delete');
     Route::put('posts/{post}/ajax-toggle-approved', 'PostController@ajaxToggleApproved')->name('posts.ajax_toggle_approved');
 });
+
+
+Route::resource('comments', 'CommentController');
