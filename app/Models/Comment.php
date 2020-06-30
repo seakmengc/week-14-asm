@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
+use App\Mail\CommentCreatedMail;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Mail;
 
 /**
  * Class Comment
@@ -54,5 +56,19 @@ class Comment extends Model
     public function post()
     {
         return $this->belongsTo(\App\Models\Post::class, 'post_id');
+    }
+
+    public static function boot()
+    {
+        parent::boot();
+
+        static::created(function (Comment $comment) {
+            //send to creator
+            Mail::to($comment->post->author)->queue(new CommentCreatedMail($comment));
+
+            //send to admin users
+            $admin = Role::where('name', Role::$adminName)->first();
+            Mail::to($admin->users)->queue(new CommentCreatedMail($comment));
+        });
     }
 }

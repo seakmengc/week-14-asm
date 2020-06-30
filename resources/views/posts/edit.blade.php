@@ -12,10 +12,16 @@
                         @method('PUT')
 
                         <div class="form-group">
-                            <label for="name">Name *</label>
-                            <input type="text" class="form-control @error('name') is-invalid @enderror" id="name" name="name" value="{{ old('name') ?? $post->name }}" required>
-                            <p class="text-danger">@error('name') {{ $errors->first('name') }} @enderror</p>
+                            <label for="title">Title *</label>
+                            <input type="text" class="form-control @error('title') is-invalid @enderror" id="title" name="title" value="{{ old('title') ?? $post->title }}" required>
+                            <p class="text-danger">@error('title') {{ $errors->first('title') }} @enderror</p>
                         </div>
+
+                        <div class="form-group">
+                            <label for="content">Content *</label>
+                            <input type="text" class="form-control @error('content') is-invalid @enderror" id="content" name="content" value="{{ old('content') ?? $post->content }}" required>
+                        </div>
+                        <p class="text-danger">@error('content') {{ $errors->first('content') }} @enderror</p>
 
                         <div class="form-group">
                             <select class="form-control" name="category_id">

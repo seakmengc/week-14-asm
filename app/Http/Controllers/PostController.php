@@ -7,6 +7,8 @@ use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Http\Requests\PostRequest;
 use App\Http\Controllers\Controller;
+use App\Mail\PostApprovedMail;
+use Illuminate\Support\Facades\Mail;
 
 class PostController extends Controller
 {

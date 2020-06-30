@@ -9,6 +9,8 @@
 
                     @include('flash::message')
 
+                    <h5 class="p-3">{{ $post->content }}</h4>
+
                     <div class="p-3">
                         <h4>Category: </h4>
                         <a href="{{ route('categories.show', $post->category) }}">{{  $post->category->name }}</a>

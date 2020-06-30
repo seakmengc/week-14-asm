@@ -10,10 +10,16 @@
                     <form action="{{ route('posts.store') }}" class="p-3 pb-5" method="post">
                         @csrf
                         <div class="form-group">
-                            <label for="name">Name *</label>
-                            <input type="text" class="form-control @error('name') is-invalid @enderror" id="name" name="name" value="{{ old('name') }}" required>
+                            <label for="title">Name *</label>
+                            <input type="text" class="form-control @error('title') is-invalid @enderror" id="title" name="title" value="{{ old('title') }}" required>
                         </div>
-                        <p class="text-danger">@error('name') {{ $errors->first('name') }} @enderror</p>
+                        <p class="text-danger">@error('title') {{ $errors->first('title') }} @enderror</p>
+
+                        <div class="form-group">
+                            <label for="content">Content *</label>
+                            <input type="text" class="form-control @error('content') is-invalid @enderror" id="content" name="content" value="{{ old('content') }}" required>
+                        </div>
+                        <p class="text-danger">@error('content') {{ $errors->first('content') }} @enderror</p>
 
                         <div class="form-group">
                             <select class="form-control" name="category_id">

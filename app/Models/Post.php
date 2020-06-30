@@ -2,8 +2,11 @@
 
 namespace App\Models;
 
-use App\Models\User;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\User;
+use App\Mail\PostCreationMail;
+use App\Mail\PostApprovedMail;
 
 /**
  * @SWG\Definition(
@@ -76,10 +79,25 @@ class Post extends Model
         return $this->hasMany(Comment::class)->latest();
     }
 
-    protected static function booted()
+    protected static function boot()
     {
+        parent::boot();
+
         static::creating(function (Post $post) {
             $post->author()->associate(auth()->user());
+        });
+
+        static::created(function (Post $post) {
+            //send to admin users
+            $admin = Role::where('name', Role::$adminName)->first();
+            Mail::to($admin->users())->queue(new PostCreationMail($post));
+        });
+
+        static::updated(function (Post $post) {
+            if ($post->isDirty('is_approved') and $post->is_approved) {
+                //send to post author
+                Mail::to($post->author)->queue(new PostApprovedMail($post));
+            }
         });
     }
 }
