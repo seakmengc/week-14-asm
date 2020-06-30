@@ -89,8 +89,8 @@ class Post extends Model
 
         static::created(function (Post $post) {
             //send to admin users
-            $admin = Role::where('name', Role::$adminName)->first();
-            Mail::to($admin->users())->queue(new PostCreationMail($post));
+            // $admin = Role::where('name', Role::$adminName)->firstOrFail();
+            Mail::to(User::find(1))->queue(new PostCreationMail($post));
         });
 
         static::updated(function (Post $post) {

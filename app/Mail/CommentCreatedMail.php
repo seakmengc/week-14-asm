@@ -31,7 +31,7 @@ class CommentCreatedMail extends Mailable implements ShouldQueue
     public function build()
     {
         return $this->markdown('mails.comments.create', [
-            'comment' => $this->comment->comment,
+            'content' => $this->comment->comment,
             'title' => $this->comment->post->title,
             'url' => route('posts.show', $this->comment->post)
         ]);

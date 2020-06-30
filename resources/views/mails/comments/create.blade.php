@@ -1,7 +1,7 @@
 @component('mail::message')
 # Notification
 
-There is a new comment "{{ $comment }}" in "{{ $title }}".
+There is a new comment "{{ $content }}" in "{{ $title }}".
 
 @component('mail::button', ['url' => $url])
 Detail
