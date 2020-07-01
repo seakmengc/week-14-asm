@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Mail\CommentCreatedMail;
+use App\Mail\CommentCreationMail;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Mail;
 
@@ -62,12 +63,9 @@ class Comment extends Model
         parent::boot();
 
         static::created(function (Comment $comment) {
-            //send to creator
-            Mail::to($comment->post->author)->queue(new CommentCreatedMail($comment));
-
-            //send to admin users
+            //send to post creator and admin users
             $admin = Role::where('name', Role::$adminName)->first();
-            Mail::to($admin->users)->queue(new CommentCreatedMail($comment));
+            Mail::to($admin->users->push($comment->post->author))->queue(new CommentCreationMail($comment));
         });
     }
 }
