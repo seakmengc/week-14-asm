@@ -64,13 +64,10 @@ class Comment extends Model
         static::created(function (Comment $comment) {
             //send to creator
             Mail::to($comment->post->author)->queue(new CommentCreatedMail($comment));
-            dump(1);
+
             //send to admin users
             $admin = Role::where('name', Role::$adminName)->first();
-            dump($admin);
-            dd($admin, $admin->users());
-            Mail::to($admin->users())->queue(new CommentCreatedMail($comment));
-            dump(3);
+            Mail::to($admin->users)->queue(new CommentCreatedMail($comment));
         });
     }
 }

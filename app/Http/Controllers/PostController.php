@@ -24,7 +24,7 @@ class PostController extends Controller
             if ($request->has('filter_approved'))
                 $query->whereIn('is_approved', $request->filter_approved);
         } else {
-            $query->whereIsApproved(1);
+            $query->where('is_approved', 1);
         }
 
         $posts = $query->paginate(10);
@@ -52,8 +52,6 @@ class PostController extends Controller
 
     public function show(Post $post)
     {
-        // dd($post);
-
         return view('posts.show', compact('post'));
     }
 
