@@ -22,6 +22,7 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('/posts', 'PostController@index')->name('posts.index');
+Route::get('/posts/{post}', 'PostController@show')->name('posts.show');
 
 Route::group([
     'middleware' => 'auth'
@@ -29,10 +30,9 @@ Route::group([
     Route::resource('categories', 'CategoryController');
     Route::delete('categories/{category}/ajax-delete', 'CategoryController@ajaxDestroy')->name('categories.ajax_delete');
 
-    Route::resource('posts', 'PostController')->except('index');
+    Route::resource('posts', 'PostController')->except(['index', 'show']);
     Route::delete('posts/{post}/ajax-delete', 'PostController@ajaxDestroy')->name('posts.ajax_delete');
     Route::put('posts/{post}/ajax-toggle-approved', 'PostController@ajaxToggleApproved')->name('posts.ajax_toggle_approved');
 });
 
-
-Route::resource('comments', 'CommentController');
+Route::post('comments', 'CommentController@store')->name('comments.store');
