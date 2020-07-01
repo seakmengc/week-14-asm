@@ -18,13 +18,17 @@ class PostController extends Controller
         if (auth()->check()) {
             $request->validate([
                 'filter_approved' => 'array',
-                'filter_approved.*' => 'boolean',
+                'filter_approved.*' => 'distinct|boolean',
             ]);
 
-            if ($request->has('filter_approved'))
+            if ($request->has('filter_approved')) {
                 $query->whereIn('is_approved', $request->filter_approved);
+            } else {
+                $request->query->set('filter_approved', [0]);
+                $query->where('is_approved', 0);
+            }
         } else {
-            $query->where('is_approved', 1);
+            $query->where('is_approved', 0);
         }
 
         $posts = $query->paginate(10);

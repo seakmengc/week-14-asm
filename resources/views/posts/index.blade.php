@@ -14,20 +14,20 @@
                             <label for="rg-from" class="pr-3">Filter: </label>
                             <div class="form-check-inline">
                                 <label class="form-check-label">
-                                    <input type="checkbox" name="filter_approved[]" class="form-check-input" onchange="this.form.submit()" value="1" 
-                                    @if(Request::get('filter_approved'))
-                                        {{ in_array("1", Request::get('filter_approved')) ? "checked" : "" }}
-                                    @endif
-                                    >Approved
-                                </label>
-                            </div>
-                            <div class="form-check-inline">
-                                <label class="form-check-label">
                                     <input type="checkbox" name="filter_approved[]" class="form-check-input" onchange="this.form.submit()" value="0"
                                     @if(Request::get('filter_approved'))
                                         {{ in_array("0", Request::get('filter_approved')) ? "checked" : "" }}
                                     @endif
                                     >Waiting
+                                </label>
+                            </div>
+                            <div class="form-check-inline">
+                                <label class="form-check-label">
+                                    <input type="checkbox" name="filter_approved[]" class="form-check-input" onchange="this.form.submit()" value="1" 
+                                    @if(Request::get('filter_approved'))
+                                        {{ in_array("1", Request::get('filter_approved')) ? "checked" : "" }}
+                                    @endif
+                                    >Approved
                                 </label>
                             </div>
                         </div>
